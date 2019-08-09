@@ -1,5 +1,0 @@
-package db.mongo;
-
-public class MongoDBUtil {
-
-}

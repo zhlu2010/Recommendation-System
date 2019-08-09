@@ -1,3 +1,0 @@
-#Tomcat publish data
-#Fri Aug 09 04:32:02 EDT 2019
-org.eclipse.jst.jee.server\:Jupiter=D\:\\tomcat9\\wtpwebapps\\Jupiter
