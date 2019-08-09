@@ -133,7 +133,7 @@ public class TicketMasterClient {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return new ArrayList<>();
 	}
 	
 	// Convert JSONArray to a list of item objects.

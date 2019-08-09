@@ -21,6 +21,7 @@
     document.querySelector('#nearby-btn').addEventListener('click', loadNearbyItems);
     document.querySelector('#fav-btn').addEventListener('click', loadFavoriteItems);
     document.querySelector('#recommend-btn').addEventListener('click', loadRecommendedItems);
+    document.querySelector('#search-btn').addEventListener('click', loadSearchItems);
     validateSession();
     // onSessionValid({"user_id":"1111","name":"John Smith","status":"OK"});
   }
@@ -72,6 +73,8 @@
     hideElement(loginForm);
     hideElement(registerForm);
     showElement(searchLabel);
+    
+    hideSearchResultBtn();
 
     initGeoLocation();
   }
@@ -313,6 +316,16 @@
     itemList.innerHTML = '<p class="notice"><i class="fa fa-exclamation-circle"></i> ' +
       msg + '</p>';
   }
+  
+  function showSearchResultBtn() {
+	 var searchResultBtn = document.querySelector('#search-res-btn');
+	 showElement(searchResultBtn);
+  }
+  
+  function hideSearchResultBtn() {
+		 var searchResultBtn = document.querySelector('#search-res-btn');
+		 hideElement(searchResultBtn);
+	  }
 
   /**
 	 * A helper function that creates a DOM element <tag options...>
@@ -383,6 +396,7 @@
   function loadNearbyItems() {
     console.log('loadNearbyItems');
     activeBtn('nearby-btn');
+    hideSearchResultBtn();
 
     // The request parameters
     var url = './search';
@@ -416,7 +430,8 @@
 	 */
   function loadFavoriteItems() {
     activeBtn('fav-btn');
-
+    hideSearchResultBtn();
+    
     // request parameters
     var url = './history';
     var params = 'user_id=' + user_id;
@@ -444,7 +459,8 @@
 	 */
   function loadRecommendedItems() {
     activeBtn('recommend-btn');
-
+    hideSearchResultBtn();
+    
     // request parameters
     var url = './recommendation' + '?' + 'user_id=' + user_id + '&lat=' + lat + '&lon=' + lng;
     var data = null;
@@ -510,16 +526,23 @@
 	 */
   //TODO: unfinished method
 function loadSearchItems() {
-  console.log('loadNearbyItems');
-  activeBtn('nearby-btn');
-
+  console.log('loadSearchItems');
+  
+  var keyword = document.querySelector('#search-by-name').value;
+  if(keyword === "") {
+	  return;
+  }
+  
+  showSearchResultBtn();
+  activeBtn('search-res-btn');  
+  
   // The request parameters
   var url = './searchKeyword';
-  var params = 'keyword=' + user_id + '&lat=' + lat + '&lon=' + lng;
+  var params = 'keyword=' + keyword;
   var data = null;
 
   // display loading message
-  showLoadingMessage('Loading nearby items...');
+  showLoadingMessage('Loading search items...');
 
   // make AJAX call
   ajax('GET', url + '?' + params, data,
@@ -527,14 +550,14 @@ function loadSearchItems() {
     function(res) {
       var items = JSON.parse(res);
       if (!items || items.length === 0) {
-        showWarningMessage('No nearby item.');
+        showWarningMessage('No result found.');
       } else {
         listItems(items);
       }
     },
     // failed callback
     function() {
-      showErrorMessage('Cannot load nearby items.');
+      showErrorMessage('Cannot load search results.');
     }
   );
 }
