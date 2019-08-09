@@ -120,6 +120,12 @@ public class MongoDBConnection implements DBConnection {
 		}
 		return items;
 	}
+	
+	@Override
+	public List<Item> searchItemsByKeyword(String keyword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public void saveItem(Item item) {

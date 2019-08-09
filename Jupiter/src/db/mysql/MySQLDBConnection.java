@@ -190,6 +190,19 @@ public class MySQLDBConnection implements DBConnection {
 
 		return itemList;
 	}
+	
+	@Override
+	public List<Item> searchItemsByKeyword(String keyword) {
+		// TODO Auto-generated method stub
+		TicketMasterClient client = new TicketMasterClient();
+		List<Item> itemList = client.searchByKeyword(keyword);
+
+		for (Item item : itemList) {
+			saveItem(item);
+		}
+
+		return itemList;
+	}
 
 	@Override
 	public void saveItem(Item item) {
@@ -271,7 +284,5 @@ public class MySQLDBConnection implements DBConnection {
 		}
 		return false;
 	}
-
-	
 
 }

@@ -62,6 +62,14 @@ public interface DBConnection {
 	 * @return list of items
 	 */
 	public List<Item> searchItems(double lat, double lon, String term);
+	
+	/**
+	 * Search items according to user's input keyword
+	 * 
+	 * @param keyword
+	 * @return
+	 */
+	public List<Item> searchItemsByKeyword(String keyword);
 
 	/**
 	 * Save item into db.

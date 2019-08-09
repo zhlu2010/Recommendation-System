@@ -3,7 +3,7 @@
   /**
 	 * Variables
 	 */
-	//dummy data
+	// dummy data
   var user_id = '1111';
   var user_fullname = 'John';
   var lng = -122.08;
@@ -60,6 +60,7 @@
     var avatar = document.querySelector('#avatar');
     var welcomeMsg = document.querySelector('#welcome-msg');
     var logoutBtn = document.querySelector('#logout-link');
+    var searchLabel = document.querySelector('#nav-search-form');
 
     welcomeMsg.innerHTML = 'Welcome, ' + user_fullname;
 
@@ -70,6 +71,7 @@
     showElement(logoutBtn, 'inline-block');
     hideElement(loginForm);
     hideElement(registerForm);
+    showElement(searchLabel);
 
     initGeoLocation();
   }
@@ -82,6 +84,7 @@
     var avatar = document.querySelector('#avatar');
     var welcomeMsg = document.querySelector('#welcome-msg');
     var logoutBtn = document.querySelector('#logout-link');
+    var searchLabel = document.querySelector('#nav-search-form');
 
     hideElement(itemNav);
     hideElement(itemList);
@@ -89,6 +92,7 @@
     hideElement(logoutBtn);
     hideElement(welcomeMsg);
     hideElement(registerForm);
+    hideElement(searchLabel);
 
     clearLoginError();
     showElement(loginForm);
@@ -499,6 +503,41 @@
         }
       });
   }
+  
+  /**
+	 * API #5 load search items API end point: [GET]
+	 * /searchKeyword?keyword=Zhonghao Lu
+	 */
+  //TODO: unfinished method
+function loadSearchItems() {
+  console.log('loadNearbyItems');
+  activeBtn('nearby-btn');
+
+  // The request parameters
+  var url = './searchKeyword';
+  var params = 'keyword=' + user_id + '&lat=' + lat + '&lon=' + lng;
+  var data = null;
+
+  // display loading message
+  showLoadingMessage('Loading nearby items...');
+
+  // make AJAX call
+  ajax('GET', url + '?' + params, data,
+    // successful callback
+    function(res) {
+      var items = JSON.parse(res);
+      if (!items || items.length === 0) {
+        showWarningMessage('No nearby item.');
+      } else {
+        listItems(items);
+      }
+    },
+    // failed callback
+    function() {
+      showErrorMessage('Cannot load nearby items.');
+    }
+  );
+}
 
   // -------------------------------------
   // Create item list
