@@ -1,2 +1,3 @@
 *.jar
 !libs/**/*.jar
+.metadata/
