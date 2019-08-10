@@ -16,7 +16,7 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class RecommendItem
  */
-@WebServlet("/recommendation")
+@WebServlet("/recommendItem")
 public class RecommendItem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

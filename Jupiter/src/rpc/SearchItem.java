@@ -3,12 +3,14 @@ package rpc;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,24 +39,39 @@ public class SearchItem extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		response.setContentType("application/json");
+		HttpSession session = request.getSession(false);
 		
 		double lat = Double.parseDouble(request.getParameter("lat"));
 		double lon = Double.parseDouble(request.getParameter("lon"));
-		
 		String term = request.getParameter("term");
+		
 		DBConnection connection = DBConnectionFactory.getConnection();
-	
-		List<Item> itemList = connection.searchItems(lat, lon, term);
+		List<Item> items = connection.searchItems(lat, lon, term);
 		JSONArray array = new JSONArray();
-		for (Item item : itemList) {
-			array.put(item.toJSONObject());
+		
+		if (session == null) {
+			for (Item item : items) {
+				array.put(item.toJSONObject());
+			}
+			
+			RpcHelper.writeJsonArray(response, array);
+			connection.close();
+		} else {		
+			String userId = session.getAttribute("user_id").toString();		
+			try {				
+				Set<String> favoritedItemIds = connection.getFavoriteItemIds(userId);
+				for (Item item : items) {
+					JSONObject obj = item.toJSONObject();
+					obj.put("favorite", favoritedItemIds.contains(item.getItemId()));
+					array.put(obj);
+				}
+				RpcHelper.writeJsonArray(response, array);	
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				connection.close();
+			}
 		}
-		
-		RpcHelper.writeJsonArray(response, array);
-		connection.close();
-
-		
 	}
 
 	/**
