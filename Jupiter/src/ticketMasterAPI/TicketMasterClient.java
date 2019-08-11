@@ -259,7 +259,8 @@ public class TicketMasterClient {
 			if(!dates.isNull("start")) {
 				JSONObject start = dates.getJSONObject("start");
 				if(!start.isNull("localTime")) {
-					return start.getString("localTime");
+					String localTime = start.getString("localTime");
+					return localTime.substring(0, localTime.length() - 3);
 				}
 			}
 		}
