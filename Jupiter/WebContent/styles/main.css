@@ -323,6 +323,20 @@ ul {
 	text-align: right;
 }
 
+.local-date {
+	line-height: 30px;
+	padding-right: 20px;
+	font-size: 0.8em;
+	text-align: right;
+}
+
+.local-time {
+	line-height: 10px;
+	padding-right: 20px;
+	font-size: 0.8em;
+	text-align: right;
+}
+
 .stars {
 	align-items: center;
 	display: flex;

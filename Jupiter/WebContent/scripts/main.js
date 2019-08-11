@@ -667,6 +667,8 @@ function loadSearchItems() {
 
     li.appendChild(section);
 
+    var details = $create('div');
+    
     // address
     var address = $create('p', {
       className: 'item-address'
@@ -674,7 +676,21 @@ function loadSearchItems() {
 
     // ',' => '<br/>', '\"' => ''
     address.innerHTML = item.address.replace(/,/g, '<br/>').replace(/\"/g, '');
-    li.appendChild(address);
+    details.appendChild(address);
+    
+    var date = $create('p', {
+    	className:'local-date'
+    });
+    date.innerHTML = item.local_date;
+    details.appendChild(date);
+    
+    var time = $create('p', {
+    	className:'local-time'
+    });
+    time.innerHTML = item.local_time;
+    details.appendChild(time);
+    
+    li.appendChild(details);
 
     // favorite link
     var favLink = $create('p', {

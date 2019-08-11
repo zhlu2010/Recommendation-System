@@ -41,6 +41,8 @@ public class MySQLTableCreation {
 					+ "image_url VARCHAR(255),"
 					+ "url VARCHAR(255),"
 					+ "distance FLOAT,"
+					+ "start_date VARCHAR(255),"
+					+ "start_time VARCHAR(255),"
 					+ "PRIMARY KEY (item_id)"
 					+ ")";
 			statement.executeUpdate(sql);

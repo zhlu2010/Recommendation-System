@@ -15,6 +15,8 @@ public class Item {
 	private String imageUrl;
 	private String url;
 	private double distance;	
+	private String localDate;
+	private String localTime;
 	
 	private Item(ItemBuilder builder) {
 		this.itemId = builder.itemId;
@@ -25,6 +27,8 @@ public class Item {
 		this.imageUrl = builder.imageUrl;
 		this.url = builder.url;
 		this.distance = builder.distance;
+		this.localDate = builder.localDate;
+		this.localTime = builder.localTime;
 	}
 	
 	/**
@@ -55,6 +59,13 @@ public class Item {
 	public double getDistance() {
 		return distance;
 	}
+	public String getLocalDate() {
+		return localDate;
+	}
+	public String getLocalTime() {
+		return localTime;
+	}
+	
 
 	public JSONObject toJSONObject() {
 		JSONObject obj = new JSONObject();
@@ -67,6 +78,8 @@ public class Item {
 			obj.put("image_url", imageUrl);
 			obj.put("url", url);
 			obj.put("distance", distance);
+			obj.put("local_date", localDate);
+			obj.put("local_time", localTime);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -82,6 +95,8 @@ public class Item {
 		private String imageUrl;
 		private String url;
 		private double distance;
+		private String localDate;
+		private String localTime;
 		
 		public void setItemId(String itemId) {
 			this.itemId = itemId;
@@ -106,6 +121,12 @@ public class Item {
 		}
 		public void setDistance(double distance) {
 			this.distance = distance;
+		}
+		public void setLocalDate(String localDate) {
+			this.localDate = localDate;
+		}
+		public void setLocalTime(String localTime) {
+			this.localTime = localTime;
 		}
 		
 		public Item build() {

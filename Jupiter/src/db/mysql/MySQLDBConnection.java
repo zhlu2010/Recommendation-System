@@ -143,6 +143,8 @@ public class MySQLDBConnection implements DBConnection {
 					builder.setCategories(getCategories(itemId));
 					builder.setDistance(rs.getDouble("distance"));
 					builder.setRating(rs.getDouble("rating"));
+					builder.setLocalDate(rs.getString("start_date"));
+					builder.setLocalTime(rs.getString("start_time"));
 
 					favoriteItems.add(builder.build());
 				}
@@ -215,7 +217,7 @@ public class MySQLDBConnection implements DBConnection {
 
 		try {
 			// ignore the duplicate, use INSERT IGNORE in sql
-			String sql = "INSERT IGNORE INTO items VALUES (?, ?, ?, ?, ?, ?, ?)"; // ? is placeholder
+			String sql = "INSERT IGNORE INTO items VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"; // ? is placeholder
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			// sql statement begin with 1
@@ -226,6 +228,8 @@ public class MySQLDBConnection implements DBConnection {
 			ps.setString(5, item.getImageUrl());
 			ps.setString(6, item.getUrl());
 			ps.setDouble(7, item.getDistance());
+			ps.setString(8, item.getLocalDate());
+			ps.setString(9, item.getLocalTime());
 			ps.execute();
 
 			sql = "INSERT IGNORE INTO categories VALUES(?, ?)";

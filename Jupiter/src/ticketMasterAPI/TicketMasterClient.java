@@ -161,6 +161,8 @@ public class TicketMasterClient {
 			builder.setAddress(getAddress(event));
 			builder.setImageUrl(getImageUrl(event));
 			builder.setCategories(getCategories(event));
+			builder.setLocalDate(getLocalDate(event));
+			builder.setLocalTime(getLocalTime(event));
 			
 			itemList.add(builder.build());
 		}
@@ -237,12 +239,37 @@ public class TicketMasterClient {
 		}
 		return categories;
 	}
+	
+	private String getLocalDate(JSONObject event) throws JSONException {
+		if(!event.isNull("dates")) {
+			JSONObject dates = event.getJSONObject("dates");
+			if(!dates.isNull("start")) {
+				JSONObject start = dates.getJSONObject("start");
+				if(!start.isNull("localDate")) {
+					return start.getString("localDate");
+				}
+			}
+		}
+		return "";
+	}
 
+	private String getLocalTime(JSONObject event) throws JSONException {
+		if(!event.isNull("dates")) {
+			JSONObject dates = event.getJSONObject("dates");
+			if(!dates.isNull("start")) {
+				JSONObject start = dates.getJSONObject("start");
+				if(!start.isNull("localTime")) {
+					return start.getString("localTime");
+				}
+			}
+		}
+		return "";
+	}
 	
 	public static void main(String[] args) {
 		TicketMasterClient client = new TicketMasterClient();
-		//List<Item> events = client.search(37.38, -122.08, null);
-		List<Item> events = client.searchByKeyword("Ed Sheeran");
+		List<Item> events = client.search(37.38, -122.08, null);
+		//List<Item> events = client.searchByKeyword("event");
 		for (Item event : events) {
 			System.out.println(event.toJSONObject());
 		}
