@@ -14,7 +14,7 @@
 	 */
   function init() {
     // register event listeners
-    document.querySelector('#login-form-btn').addEventListener('click', onSessionInvalid);
+    document.querySelector('#login-form-btn').addEventListener('click', showLoginForm);
     document.querySelector('#login-btn').addEventListener('click', login);
     document.querySelector('#register-form-btn').addEventListener('click', showRegisterForm);
     document.querySelector('#register-btn').addEventListener('click', register);
@@ -22,6 +22,8 @@
     document.querySelector('#fav-btn').addEventListener('click', loadFavoriteItems);
     document.querySelector('#recommend-btn').addEventListener('click', loadRecommendedItems);
     document.querySelector('#search-btn').addEventListener('click', loadSearchItems);
+    document.querySelector('#login-link').addEventListener('click', showLoginForm);
+    document.querySelector('#back-button').addEventListener('click', onSessionInvalid);
     validateSession();
     // onSessionValid({"user_id":"1111","name":"John Smith","status":"OK"});
   }
@@ -62,6 +64,8 @@
     var welcomeMsg = document.querySelector('#welcome-msg');
     var logoutBtn = document.querySelector('#logout-link');
     var searchLabel = document.querySelector('#nav-search-form');
+    var loginBtn = document.querySelector('#login-link');
+    var backBtn = document.querySelector('#back-button');
 
     welcomeMsg.innerHTML = 'Welcome, ' + user_fullname;
 
@@ -73,6 +77,8 @@
     hideElement(loginForm);
     hideElement(registerForm);
     showElement(searchLabel);
+    hideElement(loginBtn);
+    hideElement(backBtn);
     
     hideSearchResultBtn();
 
@@ -88,17 +94,22 @@
     var welcomeMsg = document.querySelector('#welcome-msg');
     var logoutBtn = document.querySelector('#logout-link');
     var searchLabel = document.querySelector('#nav-search-form');
+    var loginBtn = document.querySelector('#login-link');
+    var backBtn = document.querySelector('#back-button');
 
-    hideElement(itemNav);
-    hideElement(itemList);
-    hideElement(avatar);
+    showElement(itemNav);
+    showElement(itemList);
+    showElement(avatar);
     hideElement(logoutBtn);
     hideElement(welcomeMsg);
     hideElement(registerForm);
-    hideElement(searchLabel);
+    showElement(searchLabel);
+    hideElement(loginForm);
+    showElement(loginBtn, 'inline-block');
+    hideElement(backBtn);
 
-    clearLoginError();
-    showElement(loginForm);
+    //clearLoginError();
+    initGeoLocation();
   }
 
   function hideElement(element) {
@@ -118,6 +129,7 @@
     var avatar = document.querySelector('#avatar');
     var welcomeMsg = document.querySelector('#welcome-msg');
     var logoutBtn = document.querySelector('#logout-link');
+    var backBtn = document.querySelector('#back-button');
 
     hideElement(itemNav);
     hideElement(itemList);
@@ -128,8 +140,32 @@
     
     clearRegisterResult();
     showElement(registerForm);
+    showElement(backBtn);
   }  
   
+  function showLoginForm() {
+	    var loginForm = document.querySelector('#login-form');
+	    var registerForm = document.querySelector('#register-form');
+	    var itemNav = document.querySelector('#item-nav');
+	    var itemList = document.querySelector('#item-list');
+	    var avatar = document.querySelector('#avatar');
+	    var welcomeMsg = document.querySelector('#welcome-msg');
+	    var logoutBtn = document.querySelector('#logout-link');
+	    var searchLabel = document.querySelector('#nav-search-form');
+	    var loginBtn = document.querySelector('#login-link');
+	    var backBtn = document.querySelector('#back-button');
+
+	    hideElement(itemNav);
+	    hideElement(itemList);
+	    hideElement(avatar);
+	    hideElement(logoutBtn);
+	    hideElement(welcomeMsg);
+	    hideElement(registerForm);
+	    hideElement(searchLabel);
+	    showElement(loginForm);
+	    hideElement(loginBtn);
+	    showElement(backBtn);
+  }
 
   function initGeoLocation() {
     if (navigator.geolocation) {
@@ -691,24 +727,35 @@ function loadSearchItems() {
     details.appendChild(time);
     
     li.appendChild(details);
+    
+    
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+    	if(xhr.readyState == 4 && xhr.status == 200) {
+    		// favorite link
+    	    var favLink = $create('p', {
+    	      className: 'fav-link'
+    	    });
 
-    // favorite link
-    var favLink = $create('p', {
-      className: 'fav-link'
-    });
+    	    favLink.onclick = function() {
+    	      changeFavoriteItem(item_id);
+    	    };
 
-    favLink.onclick = function() {
-      changeFavoriteItem(item_id);
-    };
+    	    favLink.appendChild($create('i', {
+    	      id: 'fav-icon-' + item_id,
+    	      className: item.favorite ? 'fa fa-heart' : 'fa fa-heart-o'
+    	    }));
+    	    
+    	    li.appendChild(favLink);
+    	}
+    }
+    xhr.open('GET', './login', true);
+    xhr.send();
 
-    favLink.appendChild($create('i', {
-      id: 'fav-icon-' + item_id,
-      className: item.favorite ? 'fa fa-heart' : 'fa fa-heart-o'
-    }));
-
-    li.appendChild(favLink);
     itemList.appendChild(li);
   }
+  
+
 
   init();
 

@@ -14,6 +14,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
+ * 
+ * Unused servlet
+ * 
  * Servlet implementation class RecommendItem
  */
 @WebServlet("/recommendItem")

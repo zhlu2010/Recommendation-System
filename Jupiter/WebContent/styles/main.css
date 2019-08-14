@@ -121,6 +121,20 @@ ul {
 	width: 30px;
 }
 
+#login-link:hover {
+	color: #624630;
+	cursor: pointer;
+}
+
+#back-button {
+	flex: 0.03;
+}
+
+#back-button:hover {
+	color: #624630;
+	cursor: pointer;
+}
+
 
 /**
  * login form

@@ -77,7 +77,7 @@ public class TicketMasterClient {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return new ArrayList<>();
 	}
 	
 	public List<Item> searchByKeyword(String keyword) {
